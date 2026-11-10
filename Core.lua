@@ -5,24 +5,40 @@ local previousWasRaid = false
 local ready = false
 
 local function createOptions()
-    if not Settings or not Settings.RegisterVerticalLayoutCategory
-        or not Settings.RegisterAddOnSetting or not Settings.CreateInput
-        or not Settings.VarType or not Settings.VarType.String then
+    if not Settings or not Settings.RegisterCanvasLayoutCategory
+        or not Settings.RegisterAddOnCategory then
         print("|cff00bfffPartyWelcome:|r Options panel is unavailable on this client.")
         return
     end
 
-    local category = Settings.RegisterVerticalLayoutCategory("PartyWelcome")
-    local setting = Settings.RegisterAddOnSetting(
-        category,
-        "PARTYWELCOME_GREETING",
-        "greeting",
-        PartyWelcomeDB,
-        Settings.VarType.String,
-        "Welcome message",
-        defaultGreeting
-    )
-    Settings.CreateInput(category, setting, 255, "Message sent in party chat when someone joins your party.")
+    local panel = CreateFrame("Frame")
+    local title = panel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+    title:SetPoint("TOPLEFT", 16, -16)
+    title:SetText("Welcome message")
+
+    local input = CreateFrame("EditBox", nil, panel, "InputBoxTemplate")
+    input:SetAutoFocus(false)
+    input:SetSize(320, 32)
+    input:SetMaxLetters(255)
+    input:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -12)
+    input:SetText(PartyWelcomeDB.greeting)
+    input:SetScript("OnEnterPressed", function(editBox)
+        PartyWelcomeDB.greeting = editBox:GetText()
+        editBox:ClearFocus()
+    end)
+    input:SetScript("OnEditFocusLost", function(editBox)
+        PartyWelcomeDB.greeting = editBox:GetText()
+    end)
+
+    local description = panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+    description:SetPoint("TOPLEFT", input, "BOTTOMLEFT", 0, -8)
+    description:SetText("Sent in party chat when someone joins your party. Leave empty to disable.")
+
+    panel:SetScript("OnShow", function()
+        input:SetText(PartyWelcomeDB.greeting)
+    end)
+
+    local category = Settings.RegisterCanvasLayoutCategory(panel, "PartyWelcome")
     Settings.RegisterAddOnCategory(category)
 end
 

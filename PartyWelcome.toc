@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: PartyWelcome
+## Notes: Welcomes new party members in party chat.
+## Version: 0.1.0
+## SavedVariables: PartyWelcomeDB
+
+Core.lua

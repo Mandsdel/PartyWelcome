@@ -66,18 +66,21 @@ local function collectMembers()
         return members, false, false
     end
 
-    local groupSize = GetNumGroupMembers()
     local inRaid = type(IsInRaid) == "function" and IsInRaid() or false
-    if type(groupSize) ~= "number" or groupSize < 2 then
-        return members, false, inRaid
+    if inRaid then
+        return members, false, true
     end
 
-    local isParty = not inRaid
-    local count = inRaid and groupSize or math.min(groupSize - 1, 4)
+    local groupSize = GetNumGroupMembers()
+    if type(groupSize) ~= "number" or groupSize < 2 then
+        return members, false, false
+    end
+
+    local count = math.min(groupSize - 1, 4)
     local playerGuid = type(UnitGUID) == "function" and UnitGUID("player")
 
     for index = 1, count do
-        local unit = (inRaid and "raid" or "party") .. index
+        local unit = "party" .. index
         local isPlayer = type(UnitIsUnit) == "function" and UnitIsUnit(unit, "player")
         local identity = getMemberIdentity(unit)
 
@@ -86,7 +89,7 @@ local function collectMembers()
         end
     end
 
-    return members, isParty, inRaid
+    return members, true, false
 end
 
 local function updateRoster(announceNewMembers)
@@ -119,6 +122,7 @@ frame:SetScript("OnEvent", function(_, event, name)
         if type(PartyWelcomeDB.greeting) ~= "string" then
             PartyWelcomeDB.greeting = defaultGreeting
         end
+        frame:UnregisterEvent("ADDON_LOADED")
         return
     end
 

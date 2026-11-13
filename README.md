@@ -1,6 +1,6 @@
 # PartyWelcome
 
-PartyWelcome is a World of Warcraft Forever add-on that automatically welcomes new party members in party chat. It picks a random greeting themed around **your character's class** from 450 greetings (50 per class), and sends it two seconds after the member joins. If the member leaves or the party becomes a raid before then, the greeting is cancelled.
+PartyWelcome is a World of Warcraft Forever add-on that automatically welcomes new party members in party chat. It picks a random greeting themed around **your character's class**, and sends one message two seconds after the join. There are 50 "welcomes" per class (used when someone joins your party, in `Core.lua`) and 50 "hallos" per class (used when you join someone else's party, in `Hallos.lua`). Only one message is sent per join, with a 10 second cooldown between messages. If the member leaves or the party becomes a raid before then, the greeting is cancelled.
 
 There are no message settings or custom greetings. Disable the add-on to stop greetings. The add-on does not greet members already present when you log in or reload, and it does not send messages while you are in a raid.
 

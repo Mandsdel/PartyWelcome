@@ -3,4 +3,5 @@
 ## Notes: Welcomes new party members with class-themed greetings.
 ## Version: 0.2.0
 
+Hallos.lua
 Core.lua

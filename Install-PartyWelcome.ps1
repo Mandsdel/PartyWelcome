@@ -16,7 +16,7 @@ try {
         New-Item -ItemType Directory -Path $destination | Out-Null
     }
 
-    foreach ($file in 'PartyWelcome.toc', 'Core.lua') {
+    foreach ($file in 'PartyWelcome.toc', 'Hallos.lua', 'Core.lua') {
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination (Join-Path $destination $file) -Force
     }
 

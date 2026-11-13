@@ -473,11 +473,13 @@ local previousMembers
 local previousWasRaid = false
 local ready = false
 local pendingGreetings = {}
+local pendingKind
 local frame = CreateFrame("Frame")
 
-local function sendGreeting()
+local function sendGreeting(kind)
     local _, class = UnitClass("player")
-    local choices = greetings[class]
+    local source = kind == "hallo" and PartyWelcomeHallos or greetings
+    local choices = source and source[class]
     if not choices then
         print("|cff00bfffPartyWelcome:|r No greetings available for your class.")
         return
@@ -485,17 +487,29 @@ local function sendGreeting()
     SendChatMessage(choices[math.random(#choices)], "PARTY")
 end
 
+local GREETING_COOLDOWN = 10
+local lastGreetingTime
+
 local function updatePending(_, elapsed)
+    local due = false
     for identity, remaining in pairs(pendingGreetings) do
         remaining = remaining - elapsed
         if remaining <= 0 then
             pendingGreetings[identity] = nil
-            sendGreeting()
+            due = true
         else
             pendingGreetings[identity] = remaining
         end
     end
+    if due then
+        local now = type(GetTime) == "function" and GetTime() or 0
+        if not lastGreetingTime or now - lastGreetingTime >= GREETING_COOLDOWN then
+            lastGreetingTime = now
+            sendGreeting(pendingKind)
+        end
+    end
     if not next(pendingGreetings) then
+        pendingKind = nil
         frame:SetScript("OnUpdate", nil)
     end
 end
@@ -550,6 +564,16 @@ local function collectMembers()
     return members, true, false
 end
 
+local function isPlayerLeader()
+    if type(UnitIsGroupLeader) == "function" then
+        return UnitIsGroupLeader("player") and true or false
+    end
+    if type(IsPartyLeader) == "function" then
+        return IsPartyLeader() and true or false
+    end
+    return false
+end
+
 local function updateRoster(announceNewMembers)
     local members, isParty, inRaid = collectMembers()
 
@@ -560,13 +584,16 @@ local function updateRoster(announceNewMembers)
     end
 
     if announceNewMembers and isParty and not previousWasRaid and previousMembers ~= nil then
+        local joinedOthers = next(previousMembers) == nil and not isPlayerLeader()
         for identity in pairs(members) do
             if not previousMembers[identity] then
                 pendingGreetings[identity] = 2
+                pendingKind = pendingKind or (joinedOthers and "hallo" or "welcome")
             end
         end
     end
 
+    if not next(pendingGreetings) then pendingKind = nil end
     frame:SetScript("OnUpdate", next(pendingGreetings) and updatePending or nil)
     previousMembers = members
     previousWasRaid = inRaid

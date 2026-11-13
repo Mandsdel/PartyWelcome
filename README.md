@@ -1,8 +1,8 @@
 # PartyWelcome
 
-PartyWelcome is a World of Warcraft Forever add-on that sends a configurable message in party chat when a new member appears in your party. The default is `Hey, welcome friend`.
+PartyWelcome is a World of Warcraft Forever add-on that automatically welcomes new party members in party chat. It picks a random greeting themed around **your character's class** from 450 greetings (50 per class), and sends it two seconds after the member joins. If the member leaves or the party becomes a raid before then, the greeting is cancelled.
 
-Change the message in **Options > AddOns > PartyWelcome**. The setting is saved between sessions. Clearing the message disables greetings. The add-on does not greet members already present when you log in or reload, and it does not send messages while you are in a raid.
+There are no message settings or custom greetings. Disable the add-on to stop greetings. The add-on does not greet members already present when you log in or reload, and it does not send messages while you are in a raid.
 
 Raid rosters are not scanned. Returning from a raid establishes a new party
 baseline without greeting existing members; subsequent party joins are greeted.

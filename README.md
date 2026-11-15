@@ -23,5 +23,11 @@ The default destination is `D:\World of Warcraft\_forever_\Interface\AddOns`. To
 
 Enable **PartyWelcome** at character select. The add-on targets interface `16001`. In-game behavior has not been tested on this development machine.
 
-With a compatible Lua interpreter, run the mocked roster checks from this
-directory with `lua .\tests\Test-Core.lua`.
+Run the local checks from this directory:
+
+```powershell
+npx --yes --package=fengari-node-cli fengari .\tests\Test-Core.lua
+.\tests\Test-Install.ps1
+```
+
+The installer check uses a temporary directory, not the game installation.

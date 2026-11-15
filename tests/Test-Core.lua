@@ -52,6 +52,7 @@ tick(1.5)
 assert(#messages == 0)
 tick(0.5)
 assert(#messages == 1 and not scripts.OnUpdate)
+assert(messages[1] == PartyWelcomeHallos.WARRIOR[1])
 
 -- A departure cancels the queued greeting, even if the same member rejoins.
 groupSize, identities.party2 = 3, "two"

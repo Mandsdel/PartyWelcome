@@ -16,7 +16,12 @@ try {
         New-Item -ItemType Directory -Path $destination | Out-Null
     }
 
-    foreach ($file in 'PartyWelcome.toc', 'Hallos.lua', 'Core.lua') {
+    $files = @('PartyWelcome.toc') + @(
+        Get-Content -LiteralPath (Join-Path $PSScriptRoot 'PartyWelcome.toc') |
+            ForEach-Object { $_.Trim() } |
+            Where-Object { $_ -and -not $_.StartsWith('#') }
+    )
+    foreach ($file in $files) {
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination (Join-Path $destination $file) -Force
     }
 

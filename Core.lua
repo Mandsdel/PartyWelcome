@@ -469,6 +469,12 @@ local greetings = {
     },
 }
 
+for class, extraMessages in pairs(PartyWelcomeExtraGreetings) do
+    for _, message in ipairs(extraMessages) do
+        greetings[class][#greetings[class] + 1] = message
+    end
+end
+
 local previousMembers
 local previousWasRaid = false
 local ready = false

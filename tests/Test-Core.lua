@@ -4,6 +4,7 @@ local identities, messages = {}, {}
 local raidReads = 0
 local playerClass = "WARRIOR"
 local randomIndex = 1
+local currentTime = 0
 
 CreateFrame = function()
     return {
@@ -13,6 +14,7 @@ CreateFrame = function()
 end
 GetNumGroupMembers = function() return groupSize end
 IsInRaid = function() return inRaid end
+GetTime = function() return currentTime end
 UnitClass = function() return playerClass, playerClass end
 UnitGUID = function(unit)
     if unit:match("^raid") then raidReads = raidReads + 1 end
@@ -24,15 +26,19 @@ SendChatMessage = function(message, channel)
     messages[#messages + 1] = message
 end
 math.random = function(count)
-    assert(count == 50)
+    assert(count == 150)
     return randomIndex
 end
+
+assert(loadfile("ExtraGreetings.lua"))()
+assert(loadfile("Hallos.lua"))()
 
 local function event(name)
     scripts.OnEvent(nil, name)
 end
 
 local function tick(elapsed)
+    currentTime = currentTime + elapsed
     if scripts.OnUpdate then scripts.OnUpdate(nil, elapsed) end
 end
 
@@ -55,6 +61,7 @@ groupSize, identities.party2 = 2, nil
 event("GROUP_ROSTER_UPDATE")
 groupSize, identities.party2 = 3, "two"
 event("GROUP_ROSTER_UPDATE")
+currentTime = currentTime + 7
 tick(1)
 assert(#messages == 1)
 tick(1)
@@ -71,29 +78,42 @@ event("GROUP_ROSTER_UPDATE")
 tick(2)
 assert(#messages == 2)
 
--- Each class has 50 different choices, selected using the player's class.
+-- Each class has 150 different choices, selected using the player's class.
 local classes = {
     "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST",
     "SHAMAN", "MAGE", "WARLOCK", "DRUID",
 }
 local allGreetings = {}
+local allHallos = {}
 for _, class in ipairs(classes) do
+    assert(#PartyWelcomeHallos[class] == 150, class .. " should have 150 hi messages")
+    for _, message in ipairs(PartyWelcomeHallos[class]) do
+        assert(not message:lower():find("hallo", 1, true), "Non-English greeting: " .. message)
+        assert(not message:lower():find("zusammen", 1, true), "Non-English greeting: " .. message)
+        assert(not allHallos[message], "Duplicate hi message: " .. message)
+        allHallos[message] = true
+    end
+
     playerClass = class
-    for index = 1, 50 do
+    for index = 1, 150 do
+        currentTime = currentTime + 10
         randomIndex = index
         groupSize, identities.party4 = 5, class .. index
         event("GROUP_ROSTER_UPDATE")
         tick(2)
         local message = messages[#messages]
+        assert(not message:lower():find("hallo", 1, true), "Non-English greeting: " .. message)
+        assert(not message:lower():find("zusammen", 1, true), "Non-English greeting: " .. message)
         assert(not allGreetings[message], "Duplicate greeting: " .. message)
         allGreetings[message] = true
         groupSize, identities.party4 = 4, nil
         event("GROUP_ROSTER_UPDATE")
     end
 end
-assert(#messages == 452)
+assert(#messages == 1352)
 
--- Simultaneous joins have independent timers and each receive a greeting.
+-- Simultaneous joins keep independent timers, but the cooldown allows one message.
+currentTime = currentTime + 10
 groupSize, identities.party3 = 3, nil
 event("GROUP_ROSTER_UPDATE")
 groupSize, identities.party3 = 4, "new-three"
@@ -102,8 +122,10 @@ tick(1)
 groupSize, identities.party4 = 5, "new-four"
 event("GROUP_ROSTER_UPDATE")
 tick(1)
-assert(#messages == 453)
+assert(#messages == 1353)
 tick(1)
-assert(#messages == 454)
+assert(#messages == 1353)
+tick(1)
+assert(#messages == 1353)
 
 print("PartyWelcome core checks passed")

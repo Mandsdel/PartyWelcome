@@ -5,4 +5,5 @@
 
 ExtraGreetings.lua
 Hallos.lua
+WelcomeGreetings.lua
 Core.lua

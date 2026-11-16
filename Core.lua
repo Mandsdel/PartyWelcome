@@ -479,13 +479,26 @@ local previousMembers
 local previousWasRaid = false
 local ready = false
 local pendingGreetings = {}
-local pendingKind
 local frame = CreateFrame("Frame")
+local getMemberIdentity
 
-local function sendGreeting(kind)
+local function sendGreeting(kind, identity)
     local _, class = UnitClass("player")
     local source = kind == "hallo" and PartyWelcomeHallos or greetings
     local choices = source and source[class]
+    if kind == "welcome" then
+        local unit = previousMembers and previousMembers[identity]
+        local joiningClass
+        if unit and getMemberIdentity(unit) == identity then
+            _, joiningClass = UnitClass(unit)
+        end
+        local pairChoices = PartyWelcomePairGreetings[class]
+        if pairChoices and pairChoices[joiningClass] then
+            choices = pairChoices[joiningClass]
+        else
+            print("|cff00bfffPartyWelcome:|r Joining member's class is unavailable; using a general welcome.")
+        end
+    end
     if not choices then
         print("|cff00bfffPartyWelcome:|r No greetings available for your class.")
         return
@@ -497,30 +510,30 @@ local GREETING_COOLDOWN = 10
 local lastGreetingTime
 
 local function updatePending(_, elapsed)
-    local due = false
-    for identity, remaining in pairs(pendingGreetings) do
-        remaining = remaining - elapsed
-        if remaining <= 0 then
+    local dueIdentity, dueKind, dueUnit
+    for identity, pending in pairs(pendingGreetings) do
+        pending.remaining = pending.remaining - elapsed
+        if pending.remaining <= 0 then
             pendingGreetings[identity] = nil
-            due = true
-        else
-            pendingGreetings[identity] = remaining
+            local unit = previousMembers and previousMembers[identity]
+            if unit and (not dueUnit or unit < dueUnit) then
+                dueIdentity, dueKind, dueUnit = identity, pending.kind, unit
+            end
         end
     end
-    if due then
+    if dueIdentity then
         local now = type(GetTime) == "function" and GetTime() or 0
         if not lastGreetingTime or now - lastGreetingTime >= GREETING_COOLDOWN then
             lastGreetingTime = now
-            sendGreeting(pendingKind)
+            sendGreeting(dueKind, dueIdentity)
         end
     end
     if not next(pendingGreetings) then
-        pendingKind = nil
         frame:SetScript("OnUpdate", nil)
     end
 end
 
-local function getMemberIdentity(unit)
+getMemberIdentity = function(unit)
     if type(UnitGUID) == "function" then
         local guid = UnitGUID(unit)
         if type(guid) == "string" then
@@ -563,7 +576,7 @@ local function collectMembers()
         local identity = getMemberIdentity(unit)
 
         if not isPlayer and identity ~= nil and (playerGuid == nil or identity ~= playerGuid) then
-            members[identity] = true
+            members[identity] = unit
         end
     end
 
@@ -593,13 +606,14 @@ local function updateRoster(announceNewMembers)
         local joinedOthers = next(previousMembers) == nil and not isPlayerLeader()
         for identity in pairs(members) do
             if not previousMembers[identity] then
-                pendingGreetings[identity] = 2
-                pendingKind = pendingKind or (joinedOthers and "hallo" or "welcome")
+                pendingGreetings[identity] = {
+                    remaining = 2,
+                    kind = joinedOthers and "hallo" or "welcome",
+                }
             end
         end
     end
 
-    if not next(pendingGreetings) then pendingKind = nil end
     frame:SetScript("OnUpdate", next(pendingGreetings) and updatePending or nil)
     previousMembers = members
     previousWasRaid = inRaid

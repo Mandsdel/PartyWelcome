@@ -3,6 +3,7 @@ local inRaid, groupSize = false, 1
 local identities, messages = {}, {}
 local raidReads = 0
 local playerClass = "WARRIOR"
+local memberClasses = { party1 = "HUNTER", party2 = "MAGE", party3 = "ROGUE", party4 = "DRUID" }
 local randomIndex = 1
 local currentTime = 0
 
@@ -15,7 +16,10 @@ end
 GetNumGroupMembers = function() return groupSize end
 IsInRaid = function() return inRaid end
 GetTime = function() return currentTime end
-UnitClass = function() return playerClass, playerClass end
+UnitClass = function(unit)
+    local class = unit == "player" and playerClass or memberClasses[unit]
+    return class, class
+end
 UnitGUID = function(unit)
     if unit:match("^raid") then raidReads = raidReads + 1 end
     return unit == "player" and "player" or identities[unit]
@@ -26,12 +30,14 @@ SendChatMessage = function(message, channel)
     messages[#messages + 1] = message
 end
 math.random = function(count)
-    assert(count == 150)
+    assert(count == 150 or count == 17)
+    assert(randomIndex <= count)
     return randomIndex
 end
 
 assert(loadfile("ExtraGreetings.lua"))()
 assert(loadfile("Hallos.lua"))()
+assert(loadfile("WelcomeGreetings.lua"))()
 
 local function event(name)
     scripts.OnEvent(nil, name)
@@ -79,7 +85,7 @@ event("GROUP_ROSTER_UPDATE")
 tick(2)
 assert(#messages == 2)
 
--- Each class has 150 different choices, selected using the player's class.
+-- Hi messages remain unchanged; welcomes cover every ordered class pair.
 local classes = {
     "WARRIOR", "PALADIN", "HUNTER", "ROGUE", "PRIEST",
     "SHAMAN", "MAGE", "WARLOCK", "DRUID",
@@ -96,25 +102,31 @@ for _, class in ipairs(classes) do
     end
 
     playerClass = class
-    for index = 1, 150 do
-        currentTime = currentTime + 10
-        randomIndex = index
-        groupSize, identities.party4 = 5, class .. index
-        event("GROUP_ROSTER_UPDATE")
-        tick(2)
-        local message = messages[#messages]
-        assert(not message:lower():find("hallo", 1, true), "Non-English greeting: " .. message)
-        assert(not message:lower():find("zusammen", 1, true), "Non-English greeting: " .. message)
-        assert(not allGreetings[message], "Duplicate greeting: " .. message)
-        allGreetings[message] = true
-        groupSize, identities.party4 = 4, nil
-        event("GROUP_ROSTER_UPDATE")
+    for _, joiningClass in ipairs(classes) do
+        memberClasses.party4 = joiningClass
+        local choices = PartyWelcomePairGreetings[class][joiningClass]
+        assert(#choices == 17, class .. " / " .. joiningClass .. " should have 17 welcomes")
+        for index = 1, #choices do
+            currentTime = currentTime + 10
+            randomIndex = index
+            groupSize, identities.party4 = 5, class .. joiningClass .. index
+            event("GROUP_ROSTER_UPDATE")
+            tick(2)
+            local message = messages[#messages]
+            assert(message == choices[index], "Wrong welcome for " .. class .. " / " .. joiningClass)
+            assert(#message <= 255, "Welcome exceeds the chat limit: " .. message)
+            assert(not allGreetings[message], "Duplicate greeting: " .. message)
+            allGreetings[message] = true
+            groupSize, identities.party4 = 4, nil
+            event("GROUP_ROSTER_UPDATE")
+        end
     end
 end
-assert(#messages == 1352)
+assert(#messages == 1379)
 
 -- Simultaneous joins keep independent timers, but the cooldown allows one message.
 currentTime = currentTime + 10
+randomIndex = 1
 groupSize, identities.party3 = 3, nil
 event("GROUP_ROSTER_UPDATE")
 groupSize, identities.party3 = 4, "new-three"
@@ -123,10 +135,39 @@ tick(1)
 groupSize, identities.party4 = 5, "new-four"
 event("GROUP_ROSTER_UPDATE")
 tick(1)
-assert(#messages == 1353)
+assert(#messages == 1380)
+assert(messages[#messages] == PartyWelcomePairGreetings.DRUID.ROGUE[1])
 tick(1)
-assert(#messages == 1353)
+assert(#messages == 1380)
 tick(1)
-assert(#messages == 1353)
+assert(#messages == 1380)
+
+-- A queued member can move to another slot before the welcome is sent.
+currentTime = currentTime + 10
+groupSize, identities.party4 = 4, nil
+event("GROUP_ROSTER_UPDATE")
+groupSize, identities.party4, memberClasses.party4 = 5, "moving", "MAGE"
+event("GROUP_ROSTER_UPDATE")
+identities.party3, identities.party4 = "moving", "new-three"
+memberClasses.party3, memberClasses.party4 = "MAGE", "ROGUE"
+event("GROUP_ROSTER_UPDATE")
+tick(2)
+assert(messages[#messages] == PartyWelcomePairGreetings.DRUID.MAGE[1])
+
+-- A missing joining class is reported and uses the existing general welcome.
+currentTime = currentTime + 10
+groupSize, identities.party3 = 4, nil
+identities.party3, identities.party4 = "new-three", nil
+memberClasses.party3 = "ROGUE"
+event("GROUP_ROSTER_UPDATE")
+groupSize, identities.party4, memberClasses.party4 = 5, "unknown", nil
+event("GROUP_ROSTER_UPDATE")
+local originalPrint, notice = print, nil
+print = function(message) notice = message end
+tick(2)
+print = originalPrint
+assert(notice and notice:find("class is unavailable", 1, true))
+assert(messages[#messages] ~= PartyWelcomePairGreetings.DRUID.MAGE[1])
+assert(#messages == 1382)
 
 print("PartyWelcome core checks passed")

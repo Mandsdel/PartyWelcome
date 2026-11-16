@@ -1,6 +1,7 @@
 local scripts, events, messages = {}, {}, {}
 local class, raid, groupSize, zone = "WARLOCK", false, 2, "Durotar"
 local selectedIndex = 1
+local targetName
 
 CreateFrame = function()
     return {
@@ -12,6 +13,7 @@ UnitClass = function() return class, class end
 UnitName = function(unit)
     if unit == "player" then return "Caster" end
     if unit == "party1" then return "Passenger" end
+    if unit == "target" then return targetName end
 end
 GetNumGroupMembers = function() return groupSize end
 IsInRaid = function() return raid end
@@ -31,7 +33,8 @@ local function event(name, ...)
     scripts.OnEvent(nil, name, ...)
 end
 event("PLAYER_LOGIN")
-assert(events.UNIT_SPELLCAST_SENT and events.UNIT_SPELLCAST_START and events.UNIT_SPELLCAST_CHANNEL_START)
+assert(events.UNIT_SPELLCAST_SENT and events.UNIT_SPELLCAST_START
+    and events.UNIT_SPELLCAST_CHANNEL_START and events.UNIT_SPELLCAST_CHANNEL_STOP)
 
 local seen = {}
 for index = 1, 50 do
@@ -57,6 +60,57 @@ local count = #messages
 -- A cast that also reports a channel start must not announce twice.
 event("UNIT_SPELLCAST_CHANNEL_START", "player", "unit-cast", 698)
 assert(#messages == count)
+
+-- A channel may have a different cast ID from its send/start events.
+event("UNIT_SPELLCAST_SENT", "player", "Passenger", "sent-id", 698)
+event("UNIT_SPELLCAST_START", "player", "start-id", 698)
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "channel-id", 698)
+assert(#messages == count + 1)
+assert(messages[#messages]:find("Passenger", 1, true))
+count = #messages
+
+-- Resolve a unit token at send time, before the selected target can change.
+event("UNIT_SPELLCAST_SENT", "player", "party1", "snapshot", 698)
+local originalUnitName = UnitName
+UnitName = function(unit)
+    if unit == "party1" then return "Replacement" end
+    return originalUnitName(unit)
+end
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "snapshot", 698)
+assert(#messages == count + 1)
+assert(messages[#messages]:find("Passenger", 1, true))
+UnitName = originalUnitName
+count = #messages
+
+-- An empty passenger or cast ID must not discard the selected passenger.
+targetName = "Selected Passenger"
+event("UNIT_SPELLCAST_SENT", "player", "", nil, 698)
+targetName = "Different Target"
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "fallback", 698)
+assert(#messages == count + 1)
+assert(messages[#messages]:find("Selected Passenger", 1, true))
+count = #messages
+
+-- A channel can still be announced when its send event was not received.
+event("UNIT_SPELLCAST_CHANNEL_STOP", "player", "fallback", 698)
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "without-sent", 698)
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "without-sent", 698)
+assert(#messages == count + 1)
+assert(messages[#messages]:find("Different Target", 1, true))
+count = #messages
+targetName = nil
+event("UNIT_SPELLCAST_CHANNEL_STOP", "player", "without-sent", 698)
+
+-- A missing target at cast start can become available at channel start.
+event("UNIT_SPELLCAST_SENT", "player", "", "late-target", 698)
+event("UNIT_SPELLCAST_START", "player", "late-target", 698)
+assert(#messages == count)
+targetName = "Late Passenger"
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "late-target", 698)
+assert(#messages == count + 1)
+assert(messages[#messages]:find("Late Passenger", 1, true))
+count = #messages
+targetName = nil
 
 event("UNIT_SPELLCAST_SENT", "player", "Passenger", "other", 686)
 event("UNIT_SPELLCAST_START", "player", "other", 686)
@@ -90,7 +144,7 @@ events, scripts = {}, {}
 assert(loadfile("SummonAnnouncements.lua"))()
 event("PLAYER_LOGIN")
 assert(not events.UNIT_SPELLCAST_SENT and not events.UNIT_SPELLCAST_START
-    and not events.UNIT_SPELLCAST_CHANNEL_START)
+    and not events.UNIT_SPELLCAST_CHANNEL_START and not events.UNIT_SPELLCAST_CHANNEL_STOP)
 event("UNIT_SPELLCAST_SENT", "player", "Passenger", "mage", 698)
 event("UNIT_SPELLCAST_START", "player", "mage", 698)
 event("UNIT_SPELLCAST_CHANNEL_START", "player", "mage", 698)

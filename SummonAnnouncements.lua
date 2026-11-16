@@ -1,6 +1,7 @@
 local RITUAL_OF_SUMMONING = 698
 local frame = CreateFrame("Frame")
-local pendingCast, pendingTarget
+local pendingTarget
+local summonAnnounced = false
 local enabled = false
 
 local announcements = {
@@ -56,19 +57,24 @@ local announcements = {
     "%s, the ritual is beginning! Your fellow adventurers await in %s.",
 }
 
+local function passengerName(target)
+    if type(target) ~= "string" or target == "" then
+        return nil
+    end
+    if target == "target" or target == "player" or target:match("^party[1-4]$") then
+        target = UnitName(target)
+    end
+    if type(target) == "string" and target ~= "" then
+        return target
+    end
+end
+
 local function announce(target)
     if type(IsInRaid) == "function" and IsInRaid() then return end
     if type(GetNumGroupMembers) ~= "function" or GetNumGroupMembers() < 2 then return end
 
-    if type(target) ~= "string" or target == "" then
-        return
-    end
-    if target == "target" or target == "player" or target:match("^party[1-4]$") then
-        target = UnitName(target)
-        if type(target) ~= "string" or target == "" then
-            return
-        end
-    end
+    target = passengerName(target)
+    if not target then return end
 
     local zone = type(GetZoneText) == "function" and GetZoneText()
     if type(zone) ~= "string" or zone == "" then
@@ -86,6 +92,7 @@ local function announce(target)
         return
     end
     SendChatMessage(message, "PARTY")
+    return true
 end
 
 frame:RegisterEvent("PLAYER_LOGIN")
@@ -97,20 +104,23 @@ frame:SetScript("OnEvent", function(_, event, unit, arg2, arg3, arg4)
             frame:RegisterEvent("UNIT_SPELLCAST_SENT")
             frame:RegisterEvent("UNIT_SPELLCAST_START")
             frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+            frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
         end
         return
     end
 
     if not enabled or unit ~= "player" then return end
     if event == "UNIT_SPELLCAST_SENT" then
-        pendingCast, pendingTarget = nil, nil
-        if arg4 == RITUAL_OF_SUMMONING and type(arg3) == "string" and arg3 ~= "" then
-            pendingCast, pendingTarget = arg3, arg2
+        pendingTarget, summonAnnounced = nil, false
+        if arg4 == RITUAL_OF_SUMMONING then
+            pendingTarget = passengerName(arg2) or passengerName("target")
         end
+    elseif event == "UNIT_SPELLCAST_CHANNEL_STOP" and arg3 == RITUAL_OF_SUMMONING then
+        pendingTarget, summonAnnounced = nil, false
     elseif (event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START")
-        and arg3 == RITUAL_OF_SUMMONING then
-        local target = pendingCast == arg2 and pendingTarget or nil
-        pendingCast, pendingTarget = nil, nil
-        announce(target)
+        and arg3 == RITUAL_OF_SUMMONING and not summonAnnounced then
+        -- The channel need not reuse the cast ID from the send event.
+        local target = pendingTarget or passengerName("target")
+        summonAnnounced = announce(target) or false
     end
 end)

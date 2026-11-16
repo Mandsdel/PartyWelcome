@@ -12,6 +12,10 @@ a randomly selected portal announcement from 50 choices, naming the passenger an
 Warlock's current zone. The announcement does not mean the ritual completed or
 the passenger accepted. It is not sent in a raid or without a party. If the
 passenger or zone cannot be identified, no announcement is sent.
+The passenger is captured when the ritual is sent, using the selected target if
+the event does not provide a name. If the send event is missing, the target at
+cast/channel start is used instead. Cast and channel events do not need matching
+cast IDs, and a ritual that reports both starts still sends only one message.
 
 ## Installation
 

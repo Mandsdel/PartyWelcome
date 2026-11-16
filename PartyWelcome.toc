@@ -6,3 +6,4 @@
 ExtraGreetings.lua
 Hallos.lua
 Core.lua
+SummonAnnouncements.lua

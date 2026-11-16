@@ -1,7 +1,7 @@
 local greetings = {
     WARRIOR = {
-        "Welcome! Grab your weapon and let's make some noise!",
-        "Another fighter at our side? Our enemies should be worried. Welcome!",
+        "Welcome! I'll meet the next challenge with steel in hand.",
+        "Another ally at our side? Our enemies should be worried. Welcome!",
         "Welcome to the party! Let's hit hard and stand together.",
         "Good to have you with us. Let's charge into trouble!",
         "Welcome, friend! Steel yourself; glory awaits!",
@@ -9,18 +9,18 @@ local greetings = {
         "Welcome! There's room beside me on the front line.",
         "Well met! Let's give our enemies a reason to run.",
         "Glad you're here. We fight better together!",
-        "Welcome, ally! Keep your chin up and your blade ready.",
-        "Another brave soul! Come, let's earn our scars.",
-        "Welcome aboard! The next battle won't know what hit it.",
+        "Welcome, ally! My blade is ready for whatever lies ahead.",
+        "Another ally joins us! I'll stand with you through the fighting.",
+        "Welcome aboard! I'll bring my battle cry to the next fight.",
         "Good to see you! Let's turn trouble into triumph.",
         "Welcome! Stand with us and no foe will stand for long.",
         "Our ranks grow stronger. Glad to have you!",
         "Well met! Got room for a little glorious chaos?",
         "Welcome, friend! We'll carve a path together.",
         "Another ally for the fray! Welcome to the party.",
-        "Glad you joined us. Let's put some dents in evil!",
-        "Welcome! Sharpen your steel and bring your courage.",
-        "Well met! I'll take the first hit if you take the next.",
+        "Glad you joined us. My shield is ready to meet the enemy.",
+        "Welcome! I'll keep my steel sharp and my courage steady.",
+        "Well met! I'll be ready when the first blows fall.",
         "Welcome to the warband! Let's give them a fight to remember.",
         "Good to have you! Our enemies are about to have a bad day.",
         "Welcome! Nothing beats good company and a good battle.",
@@ -32,7 +32,7 @@ local greetings = {
         "Another brave companion? Now that's worth a cheer!",
         "Well met! Let's march toward danger with a grin.",
         "Welcome aboard! May your armor hold and your strikes land.",
-        "Good timing! We were just looking for more muscle.",
+        "Good timing! I'll make room for you in our warband.",
         "Welcome! Stand tall, fight hard, and enjoy the company.",
         "A fine day for adventure and a finer day for a new ally!",
         "Welcome, comrade! Let's leave our worries on the battlefield.",
@@ -40,11 +40,11 @@ local greetings = {
         "Welcome! Together we're tougher than any boss.",
         "Well met! May our enemies break before our spirits do.",
         "Welcome to the party! Let's meet danger head-on.",
-        "Another warrior at heart joins us! Glad you're here.",
+        "Glad you're here! My battle cry welcomes you to the party.",
         "Welcome! Keep close and we'll smash through together.",
         "Good to see you, friend. Let's give those monsters a thrashing!",
         "Welcome! The louder the battle, the warmer the company.",
-        "Well met! Our shields and spirits are stronger together.",
+        "Well met! I'll keep my shield ready as we press onward.",
         "Welcome, ally! Let's turn this adventure into a victory.",
         "You've joined just in time for a proper brawl. Welcome!",
         "Glad to have you! Let's charge first and celebrate after.",
@@ -97,7 +97,7 @@ local greetings = {
         "Well met! May we meet danger with courage and grace.",
         "Welcome aboard! Every helping hand strengthens the Light.",
         "Glad you joined us. Together, we can overcome the darkness.",
-        "Welcome! Our shields are ready and our hearts are open.",
+        "Welcome! My shield is ready, and our fellowship is open to you.",
         "Another friend to guard and be guarded by. Welcome!",
         "Well met! May our path be righteous and our company merry.",
         "Welcome, ally. Let us stand together through every trial.",
@@ -113,12 +113,12 @@ local greetings = {
         "Well met! My companion and I are glad to have you along.",
         "Welcome, traveler! Let's follow the trail together.",
         "Glad you're here. The wilds are safer with friends.",
-        "Welcome to the party! Watch for tracks and keep your bow ready.",
+        "Welcome to the party! I'll watch for tracks and keep my bow ready.",
         "Another member of the pack! Make yourself at home.",
         "Well met! Adventure is waiting just beyond the next ridge.",
         "Welcome, friend. We'll find our way through any wilderness.",
         "Good to have you! My pet promises to share the trail.",
-        "Welcome! Let's see what quarry fate has in store.",
+        "Welcome! I'll watch for tracks as we set out.",
         "The trail brought you here for a reason. Glad you joined us!",
         "Welcome aboard! Keep an eye out for tracks and treasure.",
         "Well met, fellow adventurer. Our pack grows stronger.",
@@ -129,12 +129,12 @@ local greetings = {
         "Welcome! My pet has already decided you're one of us.",
         "Good to see you. Let's roam a little and make some memories.",
         "Welcome to the pack! There's plenty of adventure to go around.",
-        "Well met! We'll scout ahead and face the wilds together.",
+        "Well met! I'll scout ahead as we venture into the wilds.",
         "Welcome, ally. Every good trail deserves good company.",
         "Glad you're here! Let's put our enemies in our sights.",
         "Welcome! The campfire is warmer with another friend.",
         "A fresh set of eyes on the trail? Glad to have you!",
-        "Well met! May your aim be true and your journey lively.",
+        "Well met! My aim is steady and our journey awaits.",
         "Welcome aboard. The wilderness holds no fear for this pack.",
         "Good to have you along! Let's track down some trouble.",
         "Welcome! Stick with the pack and we'll look after you.",
@@ -153,37 +153,37 @@ local greetings = {
         "Welcome, friend. My bow and my companion are at your service.",
         "Good to have you! The wilds are calling our names.",
         "Welcome! Another ally makes this pack hard to stop.",
-        "Well met, traveler. Let's stalk some adventure together.",
+        "Well met, traveler. I'll follow the trail wherever it leads.",
     },
     ROGUE = {
         "Welcome! I promise you didn't see me waiting here.",
-        "Well met. Watch your back; I've got the other side.",
+        "Well met. I'll watch your back from the shadows.",
         "Welcome to the party! Let's keep our enemies guessing.",
         "Glad you could slip in. Ready to cause some trouble?",
         "Welcome, friend. Stick with us and try not to step on any traps.",
         "A new ally? Excellent. Our enemies won't see us coming.",
         "Welcome! Don't mind me; I was lurking here already.",
         "Well met. Let's make a quiet entrance and a memorable exit.",
-        "Glad you're here. I'll put away the suspicious dagger.",
-        "Welcome, friend! Your coin purse is probably safe with me.",
+        "Glad you're here. My daggers are ready for our enemies.",
+        "Welcome, friend! I'll keep watch for hidden dangers.",
         "A new ally slips into the party. Perfect timing!",
-        "Welcome! If anything goes missing, let's blame the monsters.",
+        "Welcome! I'll check the passage before we move ahead.",
         "Well met. Stick close and try to look inconspicuous.",
         "Welcome aboard! A little mischief is better with friends.",
         "Glad you found us. We weren't hiding from you, honest.",
         "Welcome! Let's give our enemies a nasty surprise.",
         "Well met, friend. I saved you a spot in the shadows.",
-        "Welcome to the crew! Keep your friends close and your daggers closer.",
-        "Another accomplice? I mean, ally. Welcome!",
+        "Welcome to the crew! My daggers are ready when we need them.",
+        "Another ally joins the crew. Welcome!",
         "Welcome! No need to whisper; we're among friends.",
-        "Good to have you. I'll scout ahead and check for pockets.",
+        "Good to have you. I'll scout ahead for traps and sentries.",
         "Welcome, ally! Let's take the path of least suspicion.",
         "Well met! We could use another partner in harmless mischief.",
         "Welcome! The shadows have room for one more.",
         "Glad you're here. Our enemies won't know which way to look.",
         "Welcome aboard! Mind the poison; it's for someone else.",
-        "A new friend! Don't worry, I only pick enemy pockets.",
-        "Well met. Let's turn their backs into an opportunity.",
+        "A new friend! I'll keep my blades ready and my footsteps quiet.",
+        "Well met. I'll find an opening when our enemies look away.",
         "Welcome! I've already checked the exits, just in case.",
         "Glad you slipped in. Let's make a little trouble together.",
         "Welcome to the party! Stealth is optional; friendship isn't.",
@@ -192,19 +192,19 @@ local greetings = {
         "Another ally joins us. Excellent; the plan gets better.",
         "Welcome! I was never here, but I'm glad you are.",
         "Good to see you. Let's sneak past the boring parts.",
-        "Welcome aboard! Keep a dagger handy and a smile closer.",
+        "Welcome aboard! My blades will be there when you need them.",
         "Well met! A sharp blade and good friends solve many problems.",
         "Welcome! I promise not to vanish until after introductions.",
         "Glad you're here. Let's put a twist in our enemies' plans.",
         "Welcome, friend! The best loot is shared with good company.",
-        "Well met. Together we'll be a delightful nuisance.",
+        "Well met. I'll keep our enemies guessing while we find our way.",
         "Welcome to the crew! Our opponents are in for a surprise.",
-        "Good timing! I was just sharpening my welcoming dagger.",
+        "Good timing! I've found a quiet route ahead.",
         "Welcome! Follow my lead, but avoid the suspicious floor tiles.",
         "Another ally in the shadows. This is getting interesting!",
         "Well met, friend. Let's keep our plans between us.",
         "Welcome! With you here, our little scheme is complete.",
-        "Glad you joined us. I'll handle the locks; you bring the charm.",
+        "Glad you joined us. I'll handle any locks we find along the way.",
         "Welcome aboard! Let's be subtle, at least until the fighting starts.",
     },
     PRIEST = {
@@ -274,7 +274,7 @@ local greetings = {
         "Well met! The thunder sounds friendlier with you beside us.",
         "Welcome, traveler. May the elements favor our journey.",
         "Good to have you! Let's bring some thunder to the party.",
-        "Welcome! The earth is solid and our friendship stronger.",
+        "Welcome! May the earth steady our steps on the road ahead.",
         "The spirits sent us good company today. Well met!",
         "Welcome, friend. Let the rain wash away your worries.",
         "Well met! Together we'll ride out any storm.",
@@ -315,32 +315,32 @@ local greetings = {
         "Welcome! Pull up a chair; the magic is just getting started.",
         "Well met! I hope you're ready for a little arcane adventure.",
         "Welcome to the party! Let's make some magical memories.",
-        "Glad you're here. Try not to stand too close to the explosions.",
-        "A new ally appears! No teleportation mishaps, I hope?",
+        "Glad you're here. My spells are ready for the journey.",
+        "A new ally joins us! My arcane magic is at your service.",
         "Welcome! I've got spells, snacks, and plenty of enthusiasm.",
-        "Well met! Please excuse the sparks; they're mostly under control.",
+        "Well met! I'll keep my fire spells ready for our enemies.",
         "Welcome, friend. There's always room for another at the table.",
         "Glad you joined us! Let's add a little magic to the journey.",
         "Welcome! I conjured some hospitality just for you.",
         "A new ally appears. My favorite kind of surprise!",
-        "Well met! Keep your hands inside the portal at all times.",
+        "Well met! My portals can help us find our way.",
         "Welcome to the party! Frost, fire, or arcane: take your pick.",
         "Good to see you. Shall we turn trouble into a fine mist?",
-        "Welcome! I've prepared a warm greeting and a warmer fireball.",
+        "Welcome! My fireballs are ready if danger finds us.",
         "Well met, traveler. Our adventure is looking positively spellbinding.",
         "Welcome aboard! The snacks are conjured but the friendship is real.",
         "Glad you're here. Let's make our enemies disappear.",
-        "Welcome! Mind the glowing runes; they're probably safe.",
-        "Another friend joins the party. An excellent result of my calculations!",
+        "Welcome! Let the arcane light our path ahead.",
+        "Another friend joins the party. There's magic in good company!",
         "Well met! I hope you enjoy magic with a side of mayhem.",
         "Welcome, ally. I saved you the seat furthest from the fire.",
         "Good to have you! Let's give this journey some sparkle.",
         "Welcome! If things get chilly, I may have overdone the frost.",
         "Well met! Together we'll solve every problem with style and spells.",
-        "Welcome to the party. Please refrain from feeding the mana.",
+        "Welcome to the party. My mana is ready for the road ahead.",
         "Glad you're here. My spellbook has a chapter on making friends.",
         "Welcome! Let's put the arcane arts to good use.",
-        "A new companion! I knew this summoning would pay off.",
+        "A new companion! My spellbook is ready for our next challenge.",
         "Well met, friend. Let us turn ordinary trouble into magical trouble.",
         "Welcome aboard! I'll bring the spells if you bring the courage.",
         "Good to see you. There's plenty of magic to go around.",
@@ -348,30 +348,30 @@ local greetings = {
         "Well met! No adventure is complete without a little enchantment.",
         "Welcome, traveler. The next portal leads to excellent company.",
         "Glad you joined us! Let's give our foes a lesson in magic.",
-        "Welcome! My crystal ball predicted we'd get along.",
+        "Welcome! I'll bring arcane insight to whatever we face.",
         "A new friend arrives, and I didn't even need a portal!",
         "Well met! Keep cool; I've got the frost spells covered.",
         "Welcome to the party! Please ignore any minor magical anomalies.",
         "Good to have you. Let's make this adventure extraordinary.",
         "Welcome! I have just the spell for a proper introduction.",
         "Well met, ally. May your mana be plentiful and your travels bright.",
-        "Welcome aboard! Watch your step around the sheep.",
+        "Welcome aboard! My frost spells are ready to slow our foes.",
         "Glad you're here. I'll put the kettle on and the fireballs away.",
         "Welcome! A little arcane brilliance goes a long way.",
         "Well met! Let's make some magic happen together.",
         "Welcome, friend. Our enemies are about to get a frosty reception.",
-        "Good to see you! The party has gained another ingredient for success.",
+        "Good to see you! I'll bring my magic to our next battle.",
         "Welcome! Come for the adventure, stay for the conjured refreshments.",
     },
     WARLOCK = {
         "Welcome, friend. The shadows have been expecting you.",
-        "Come closer. I promise the whispers are mostly friendly.",
+        "Well met. My shadows will serve our party on the road ahead.",
         "Welcome to the party! Mind the demons; they're rather attached to me.",
         "Another soul joins us. How delightfully unexpected. Welcome!",
         "Well met. The darkness is much more pleasant with company.",
         "Welcome! Make yourself comfortable, but don't touch the summoning circle.",
         "Well met. The shadows saved a place for you.",
-        "Welcome, friend. Ignore the ominous chanting; it's only a greeting.",
+        "Welcome, friend. My dark arts are ready to face our enemies.",
         "Glad you've joined us. The darkness loves good company.",
         "Welcome! My demons are on their best behavior today.",
         "Another ally enters the circle. How wonderfully foreboding.",
@@ -381,37 +381,37 @@ local greetings = {
         "Welcome! There's a seat for you just beyond the shadows.",
         "Well met, friend. Our enemies' nightmares just gained a chapter.",
         "Welcome to the party. The ritual is friendlier than it looks.",
-        "Glad you're here. I was growing tired of talking to demons.",
+        "Glad you're here. My demons and I stand ready to help.",
         "Welcome! Pay no attention to the eyes in the dark.",
         "Another companion joins us. The shadows approve.",
         "Well met. Let us make this journey deliciously dangerous.",
         "Welcome, ally. I saved you a spot outside the cursed circle.",
         "Good to see you. Don't worry; the soulstones are for emergencies.",
-        "Welcome! I promise the flames are mostly decorative.",
+        "Welcome! My fel fire will burn against our foes.",
         "Well met, traveler. May our enemies fear the dark together.",
         "Welcome to our little gathering. The candles light themselves.",
-        "Glad you've arrived. My imp could use a better role model.",
+        "Glad you've arrived. My imp and I are ready for the fight.",
         "Welcome, friend. There's nothing to fear on our side of the ritual.",
         "Well met! Let's give our foes something dreadful to remember.",
         "Welcome aboard. The shadows are cozy once you get used to them.",
-        "Another ally? Splendid. The demons were getting outnumbered.",
+        "Another ally joins us. My curses are ready for our enemies.",
         "Welcome! The voices said you'd be good company.",
-        "Good to have you here. Please leave your soul safely attached.",
+        "Good to have you here. I have a healthstone ready if you need it.",
         "Welcome, traveler. Our path may be dark, but the company is excellent.",
         "Well met! I've brewed a warm welcome and a colder curse.",
-        "Welcome to the party. The spooky atmosphere comes at no extra cost.",
+        "Welcome to the party. I'll turn my shadows against our enemies.",
         "Glad you're here. Let's put a little fear in our enemies' hearts.",
         "Welcome! Don't mind the fel glow; it complements the decor.",
         "Well met, friend. Even a warlock appreciates good company.",
         "Welcome, ally. Together we'll turn shadows to our advantage.",
-        "Another friend joins the darkness. How charmingly wicked.",
-        "Welcome! My minions promise not to nibble on the guests.",
-        "Good to see you. The ritual needed one less demon and one more friend.",
+        "Another friend joins us. My dark magic is at your service.",
+        "Welcome! My minions will stand with us in battle.",
+        "Good to see you. My summoning circle is ready if we need it.",
         "Welcome aboard. Let's make our enemies regret their choices.",
         "Well met! There is always room for another at the dark table.",
         "Welcome, friend. I kept the curses for our enemies.",
         "Glad you joined us. The void can wait until after introductions.",
-        "Welcome! You bring the company; I'll bring the eldritch horror.",
+        "Welcome! I'll bring the strength of the shadows to our cause.",
         "Well met, ally. The shadows are less lonely with you here.",
         "Welcome to the circle. Try not to read the forbidden book aloud.",
     },
@@ -479,26 +479,13 @@ local previousMembers
 local previousWasRaid = false
 local ready = false
 local pendingGreetings = {}
+local pendingKind
 local frame = CreateFrame("Frame")
-local getMemberIdentity
 
-local function sendGreeting(kind, identity)
+local function sendGreeting(kind)
     local _, class = UnitClass("player")
     local source = kind == "hallo" and PartyWelcomeHallos or greetings
     local choices = source and source[class]
-    if kind == "welcome" then
-        local unit = previousMembers and previousMembers[identity]
-        local joiningClass
-        if unit and getMemberIdentity(unit) == identity then
-            _, joiningClass = UnitClass(unit)
-        end
-        local pairChoices = PartyWelcomePairGreetings[class]
-        if pairChoices and pairChoices[joiningClass] then
-            choices = pairChoices[joiningClass]
-        else
-            print("|cff00bfffPartyWelcome:|r Joining member's class is unavailable; using a general welcome.")
-        end
-    end
     if not choices then
         print("|cff00bfffPartyWelcome:|r No greetings available for your class.")
         return
@@ -510,30 +497,30 @@ local GREETING_COOLDOWN = 10
 local lastGreetingTime
 
 local function updatePending(_, elapsed)
-    local dueIdentity, dueKind, dueUnit
-    for identity, pending in pairs(pendingGreetings) do
-        pending.remaining = pending.remaining - elapsed
-        if pending.remaining <= 0 then
+    local due = false
+    for identity, remaining in pairs(pendingGreetings) do
+        remaining = remaining - elapsed
+        if remaining <= 0 then
             pendingGreetings[identity] = nil
-            local unit = previousMembers and previousMembers[identity]
-            if unit and (not dueUnit or unit < dueUnit) then
-                dueIdentity, dueKind, dueUnit = identity, pending.kind, unit
-            end
+            due = true
+        else
+            pendingGreetings[identity] = remaining
         end
     end
-    if dueIdentity then
+    if due then
         local now = type(GetTime) == "function" and GetTime() or 0
         if not lastGreetingTime or now - lastGreetingTime >= GREETING_COOLDOWN then
             lastGreetingTime = now
-            sendGreeting(dueKind, dueIdentity)
+            sendGreeting(pendingKind)
         end
     end
     if not next(pendingGreetings) then
+        pendingKind = nil
         frame:SetScript("OnUpdate", nil)
     end
 end
 
-getMemberIdentity = function(unit)
+local function getMemberIdentity(unit)
     if type(UnitGUID) == "function" then
         local guid = UnitGUID(unit)
         if type(guid) == "string" then
@@ -576,7 +563,7 @@ local function collectMembers()
         local identity = getMemberIdentity(unit)
 
         if not isPlayer and identity ~= nil and (playerGuid == nil or identity ~= playerGuid) then
-            members[identity] = unit
+            members[identity] = true
         end
     end
 
@@ -606,14 +593,13 @@ local function updateRoster(announceNewMembers)
         local joinedOthers = next(previousMembers) == nil and not isPlayerLeader()
         for identity in pairs(members) do
             if not previousMembers[identity] then
-                pendingGreetings[identity] = {
-                    remaining = 2,
-                    kind = joinedOthers and "hallo" or "welcome",
-                }
+                pendingGreetings[identity] = 2
+                pendingKind = pendingKind or (joinedOthers and "hallo" or "welcome")
             end
         end
     end
 
+    if not next(pendingGreetings) then pendingKind = nil end
     frame:SetScript("OnUpdate", next(pendingGreetings) and updatePending or nil)
     previousMembers = members
     previousWasRaid = inRaid

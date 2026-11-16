@@ -7,7 +7,7 @@ There are no message settings or custom greetings. Disable the add-on to stop gr
 Raid rosters are not scanned. Returning from a raid establishes a new party
 baseline without greeting existing members; subsequent party joins are greeted.
 
-When a Warlock begins casting Ritual of Summoning in a party, PartyWelcome sends
+When a Warlock begins channeling Ritual of Summoning in a party, PartyWelcome sends
 a randomly selected portal announcement from 50 choices, naming the passenger and the
 Warlock's current zone. The announcement does not mean the ritual completed or
 the passenger accepted. It is not sent in a raid or without a party. If the

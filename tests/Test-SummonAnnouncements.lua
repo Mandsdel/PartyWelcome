@@ -31,13 +31,13 @@ local function event(name, ...)
     scripts.OnEvent(nil, name, ...)
 end
 event("PLAYER_LOGIN")
-assert(events.UNIT_SPELLCAST_SENT and events.UNIT_SPELLCAST_START)
+assert(events.UNIT_SPELLCAST_SENT and events.UNIT_SPELLCAST_START and events.UNIT_SPELLCAST_CHANNEL_START)
 
 local seen = {}
 for index = 1, 50 do
     selectedIndex = index
     event("UNIT_SPELLCAST_SENT", "player", "Passenger", "cast" .. index, 698)
-    event("UNIT_SPELLCAST_START", "player", "cast" .. index, 698)
+    event("UNIT_SPELLCAST_CHANNEL_START", "player", "cast" .. index, 698)
     local message = messages[#messages]
     assert(#messages == index and #message <= 255)
     assert(message:find("Passenger", 1, true))
@@ -54,10 +54,15 @@ event("UNIT_SPELLCAST_START", "player", "unit-cast", 698)
 assert(messages[#messages]:find("Passenger", 1, true))
 local count = #messages
 
+-- A cast that also reports a channel start must not announce twice.
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "unit-cast", 698)
+assert(#messages == count)
+
 event("UNIT_SPELLCAST_SENT", "player", "Passenger", "other", 686)
 event("UNIT_SPELLCAST_START", "player", "other", 686)
 event("UNIT_SPELLCAST_SENT", "party1", "Passenger", "other-player", 698)
 event("UNIT_SPELLCAST_START", "party1", "other-player", 698)
+event("UNIT_SPELLCAST_CHANNEL_START", "party1", "other-player", 698)
 assert(#messages == count)
 
 event("UNIT_SPELLCAST_SENT", "player", "Passenger", "interrupted", 698)
@@ -84,7 +89,9 @@ class = "MAGE"
 events, scripts = {}, {}
 assert(loadfile("SummonAnnouncements.lua"))()
 event("PLAYER_LOGIN")
-assert(not events.UNIT_SPELLCAST_SENT and not events.UNIT_SPELLCAST_START)
+assert(not events.UNIT_SPELLCAST_SENT and not events.UNIT_SPELLCAST_START
+    and not events.UNIT_SPELLCAST_CHANNEL_START)
 event("UNIT_SPELLCAST_SENT", "player", "Passenger", "mage", 698)
 event("UNIT_SPELLCAST_START", "player", "mage", 698)
+event("UNIT_SPELLCAST_CHANNEL_START", "player", "mage", 698)
 assert(#messages == count)

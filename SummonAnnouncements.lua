@@ -96,6 +96,7 @@ frame:SetScript("OnEvent", function(_, event, unit, arg2, arg3, arg4)
         if enabled then
             frame:RegisterEvent("UNIT_SPELLCAST_SENT")
             frame:RegisterEvent("UNIT_SPELLCAST_START")
+            frame:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
         end
         return
     end
@@ -106,7 +107,8 @@ frame:SetScript("OnEvent", function(_, event, unit, arg2, arg3, arg4)
         if arg4 == RITUAL_OF_SUMMONING and type(arg3) == "string" and arg3 ~= "" then
             pendingCast, pendingTarget = arg3, arg2
         end
-    elseif event == "UNIT_SPELLCAST_START" and arg3 == RITUAL_OF_SUMMONING then
+    elseif (event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_CHANNEL_START")
+        and arg3 == RITUAL_OF_SUMMONING then
         local target = pendingCast == arg2 and pendingTarget or nil
         pendingCast, pendingTarget = nil, nil
         announce(target)

@@ -2,8 +2,10 @@
 ## Title: PartyWelcome
 ## Notes: Welcomes new party members with class-themed greetings.
 ## Version: 0.2.0
+## SavedVariablesPerCharacter: PartyWelcomeDB
 
 ExtraGreetings.lua
 Hallos.lua
 Core.lua
 SummonAnnouncements.lua
+Options.lua

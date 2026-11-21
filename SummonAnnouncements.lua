@@ -81,12 +81,16 @@ local function announce(target)
         return
     end
 
-    local index = math.random(#announcements)
     local message
-    if index == 3 then
-        message = string.format(announcements[index], zone, target)
+    if type(PartyWelcomeDB) == "table" and PartyWelcomeDB.basicSummon == true then
+        message = string.format("%s is being summoned to %s. Please click the portal to assist", target, zone)
     else
-        message = string.format(announcements[index], target, zone)
+        local index = math.random(#announcements)
+        if index == 3 then
+            message = string.format(announcements[index], zone, target)
+        else
+            message = string.format(announcements[index], target, zone)
+        end
     end
     if #message > 255 then
         return

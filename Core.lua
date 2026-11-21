@@ -483,6 +483,11 @@ local pendingKind
 local frame = CreateFrame("Frame")
 
 local function sendGreeting(kind)
+    if type(PartyWelcomeDB) == "table" and type(PartyWelcomeDB.basicGreeting) == "string"
+        and PartyWelcomeDB.basicGreeting:match("%S") and #PartyWelcomeDB.basicGreeting <= 255 then
+        SendChatMessage(PartyWelcomeDB.basicGreeting, "PARTY")
+        return
+    end
     local _, class = UnitClass("player")
     local source = kind == "hallo" and PartyWelcomeHallos or greetings
     local choices = source and source[class]

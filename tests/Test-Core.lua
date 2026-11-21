@@ -149,4 +149,27 @@ for _, class in ipairs(classes) do
 end
 assert(#messages == 813)
 
+-- A custom message overrides both greeting kinds without changing their lists.
+PartyWelcomeDB = { basicGreeting = "Hello, everyone!" }
+groupSize, identities = 1, {}
+event("GROUP_ROSTER_UPDATE")
+currentTime = currentTime + 10
+groupSize, identities.party1 = 2, "custom-hi"
+event("GROUP_ROSTER_UPDATE")
+tick(2)
+assert(messages[#messages] == "Hello, everyone!")
+currentTime = currentTime + 10
+groupSize, identities.party2 = 3, "custom-welcome"
+event("GROUP_ROSTER_UPDATE")
+tick(2)
+assert(messages[#messages] == "Hello, everyone!")
+assert(#PartyWelcomeHallos.WARRIOR == 30)
+PartyWelcomeDB.basicGreeting = nil
+currentTime = currentTime + 10
+groupSize, identities.party3 = 4, "random-again"
+event("GROUP_ROSTER_UPDATE")
+expectedChoices, randomIndex = 60, 1
+tick(2)
+assert(messages[#messages] ~= "Hello, everyone!")
+
 print("PartyWelcome core checks passed")

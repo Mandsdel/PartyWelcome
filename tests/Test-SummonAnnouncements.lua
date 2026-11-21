@@ -139,6 +139,18 @@ event("UNIT_SPELLCAST_SENT", "player", "Passenger", "no-zone", 698)
 event("UNIT_SPELLCAST_START", "player", "no-zone", 698)
 assert(#messages == count)
 
+zone = "Durotar"
+PartyWelcomeDB = { basicSummon = true }
+event("UNIT_SPELLCAST_SENT", "player", "Passenger", "basic", 698)
+event("UNIT_SPELLCAST_START", "player", "basic", 698)
+assert(messages[#messages] == "Passenger is being summoned to Durotar. Please click the portal to assist")
+count = #messages
+PartyWelcomeDB.basicSummon = false
+event("UNIT_SPELLCAST_SENT", "player", "Passenger", "random", 698)
+event("UNIT_SPELLCAST_START", "player", "random", 698)
+assert(#messages == count + 1 and seen[messages[#messages]])
+count = #messages
+
 class = "MAGE"
 events, scripts = {}, {}
 assert(loadfile("SummonAnnouncements.lua"))()
